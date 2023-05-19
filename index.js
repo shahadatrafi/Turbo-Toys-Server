@@ -10,8 +10,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res)=> {
-    res.send('Turbo is running')
+app.get('/', (req, res) => {
+  res.send('Turbo is running')
 })
 
 
@@ -27,16 +27,31 @@ const client = new MongoClient(uri, {
 });
 
 async function run() {
-    try {
-      
-        const toysCollections = client.db("turboToys").collection('products');
+  try {
+
+    const toysCollections = client.db("turboToys").collection('products');
     // Connect the client to the server	(optional starting in v4.7)
-      await client.connect();
-      
-        app.get('/toys', async (req, res) => {
-            const result = await toysCollections.find().toArray();
-            res.send(result);
-      })
+    await client.connect();
+
+    app.get('/toys', async (req, res) => {
+      const result = await toysCollections.find().toArray();
+      res.send(result);
+    })
+    
+    app.get('/toys/regular-car', async (req, res) => {
+      const result = await toysCollections.find({subcategory : 'Regular Car'}).toArray();
+      res.send(result);
+    })
+    
+    app.get('/toys/police-car', async (req, res) => {
+      const result = await toysCollections.find({subcategory : 'Police Car'}).toArray();
+      res.send(result);
+    })
+    
+    app.get('/toys/sports-car', async (req, res) => {
+      const result = await toysCollections.find({subcategory : 'Sports Car'}).toArray();
+      res.send(result);
+    })
 
 
 
@@ -54,5 +69,5 @@ run().catch(console.dir);
 
 
 app.listen(port, () => {
-    console.log(`Turbo is running on ${port}`)
+  console.log(`Turbo is running on ${port}`)
 })
