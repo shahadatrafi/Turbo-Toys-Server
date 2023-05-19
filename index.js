@@ -33,11 +33,22 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+    // toys route
     app.get('/toys', async (req, res) => {
-      const result = await toysCollections.find().toArray();
+      let query ={}
+      if (req.query.email) {
+        query = { sellerEmail : req.query.email}
+      };
+      const result = await toysCollections.find(query).toArray();
       res.send(result);
     })
     
+    app.post('/toys', async (req, res) => {
+      const newToy = req.body;
+      const result = await toysCollections.insertOne(newToy);
+      res.send(result);
+    })
+
     app.get('/toys/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id : new ObjectId(id) }
@@ -45,6 +56,7 @@ async function run() {
       res.send(result);
     })
     
+    // sub-category route
     app.get('/toys/regular-car', async (req, res) => {
       const result = await toysCollections.find({subcategory : 'Regular Car'}).toArray();
       res.send(result);
