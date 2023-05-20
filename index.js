@@ -62,6 +62,22 @@ async function run() {
       const result = await toysCollections.deleteOne(query);
       res.send(result);
     })
+    
+    app.put('/toys/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const toy = req.body;
+      const updatedToy = {
+        $set: {
+          price: toy.price,
+          quantity: toy.quantity,
+          description: toy.description
+        }
+      };
+      const result = await toysCollections.updateOne(query, updatedToy, options);
+      res.send(result);
+    })
 
     // sub-category route
     app.get('/toys/regular-car', async (req, res) => {
