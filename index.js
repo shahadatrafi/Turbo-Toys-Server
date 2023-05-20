@@ -34,6 +34,7 @@ async function run() {
     await client.connect();
 
     // toys route
+    
     app.get('/toys', async (req, res) => {
       let query = {};
       if (req.query.email) {
@@ -42,6 +43,10 @@ async function run() {
       const result = await toysCollections.find(query).limit(20).toArray();
       res.send(result);
     })
+
+    // sorting
+
+    // sorting
 
     // sub-category route
     app.get('/toys/regular-car', async (req, res) => {
