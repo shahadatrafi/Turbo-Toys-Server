@@ -35,14 +35,14 @@ async function run() {
 
     // toys route
     app.get('/toys', async (req, res) => {
-      let query ={}
+      let query = {};
       if (req.query.email) {
-        query = { sellerEmail : req.query.email}
-      };
+        query = { sellerEmail: req.query.email }
+      }
       const result = await toysCollections.find(query).toArray();
       res.send(result);
     })
-    
+
     app.post('/toys', async (req, res) => {
       const newToy = req.body;
       const result = await toysCollections.insertOne(newToy);
@@ -51,24 +51,31 @@ async function run() {
 
     app.get('/toys/:id', async (req, res) => {
       const id = req.params.id;
-      const query = { _id : new ObjectId(id) }
+      const query = { _id: new ObjectId(id) }
       const result = await toysCollections.findOne(query);
       res.send(result);
     })
-    
+
+    app.delete('/toys/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await toysCollections.deleteOne(query);
+      res.send(result);
+    })
+
     // sub-category route
     app.get('/toys/regular-car', async (req, res) => {
-      const result = await toysCollections.find({subcategory : 'Regular Car'}).toArray();
+      const result = await toysCollections.find({ subcategory: 'Regular Car' }).toArray();
       res.send(result);
     })
-    
+
     app.get('/toys/police-car', async (req, res) => {
-      const result = await toysCollections.find({subcategory : 'Police Car'}).toArray();
+      const result = await toysCollections.find({ subcategory: 'Police Car' }).toArray();
       res.send(result);
     })
-    
+
     app.get('/toys/sports-car', async (req, res) => {
-      const result = await toysCollections.find({subcategory : 'Sports Car'}).toArray();
+      const result = await toysCollections.find({ subcategory: 'Sports Car' }).toArray();
       res.send(result);
     })
 
