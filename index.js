@@ -39,9 +39,25 @@ async function run() {
       if (req.query.email) {
         query = { sellerEmail: req.query.email }
       }
-      const result = await toysCollections.find(query).toArray();
+      const result = await toysCollections.find(query).limit(20).toArray();
       res.send(result);
     })
+
+    // sub-category route
+    app.get('/toys/regular-car', async (req, res) => {
+      const result = await toysCollections.find({ subcategory: 'Regular Car' }).toArray();
+      res.send(result);
+    });
+
+    app.get('/toys/police-car', async (req, res) => {
+      const result = await toysCollections.find({ subcategory: 'Police Car' }).toArray();
+      res.send(result);
+    });
+
+    app.get('/toys/sports-car', async (req, res) => {
+      const result = await toysCollections.find({ subcategory: 'Sports Car' }).toArray();
+      res.send(result);
+    });
 
     app.post('/toys', async (req, res) => {
       const newToy = req.body;
@@ -79,21 +95,7 @@ async function run() {
       res.send(result);
     })
 
-    // sub-category route
-    app.get('/toys/regular-car', async (req, res) => {
-      const result = await toysCollections.find({ subcategory: 'Regular Car' }).toArray();
-      res.send(result);
-    })
-
-    app.get('/toys/police-car', async (req, res) => {
-      const result = await toysCollections.find({ subcategory: 'Police Car' }).toArray();
-      res.send(result);
-    })
-
-    app.get('/toys/sports-car', async (req, res) => {
-      const result = await toysCollections.find({ subcategory: 'Sports Car' }).toArray();
-      res.send(result);
-    })
+    
 
 
 
