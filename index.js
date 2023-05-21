@@ -36,11 +36,20 @@ async function run() {
     // toys route
     
     app.get('/toys', async (req, res) => {
+      const sort = req.query.sort;
       let query = {};
       if (req.query.email) {
         query = { sellerEmail: req.query.email }
       }
-      const result = await toysCollections.find(query).limit(20).toArray();
+      console.log(sort)
+      const options = {
+        // sort matched documents in descending order by price
+        sort: { 
+            "price": sort === 'asc' ? 1 : -1
+        }
+        
+    };
+      const result = await toysCollections.find(query, options).limit(20).toArray();
       res.send(result);
     })
 
